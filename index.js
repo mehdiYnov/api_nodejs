@@ -1,64 +1,45 @@
 const express = require("express");
-const fs = require("fs");
+const mysql = require('mysql');
 const app = express();
-const wydads = require("./data/wydad.json");
 var bodyParser = require("body-parser");
 
 app.use(bodyParser.urlencoded({ extended: false }));
-
 app.use(bodyParser.json());
 
-app.get("/wydads", (req, res) => {
-  res.status(200).json(wydads);
+// Create a MySQL connection
+const connection = mysql.createConnection({
+  host: 'localhost',
+  user: 'root', // Remove @localhost from the username
+  password: '',
+  database: 'apiYnov'
 });
 
-// app.get('/wydad/:id', (req, res) =>{
-//     const id = parseInt(req.params.id)
-//     const wydad = wydads.find(wydad => wydad.id === id)
-//     res.status(200).json(wydad)
-// })
+// Connect to MySQL
+connection.connect();
 
-// app.post("/wydads", (req, res) => {
-//     console.log(req.body)
-//     wydads.push(req.body)
-//     res.status(201).json()
-// })
+// Define a route to retrieve data from the MySQL database
+app.get("/wydads", (req, res) => {
+  // Perform a SELECT query to retrieve data from the 'wydadinfo' table
+  const query = 'SELECT * FROM wydadinfo';
 
-// app.get('/wydads', (req, res ) =>{
-//   res.status(200).json(wydads)
-// })
+  connection.query(query, (error, results, fields) => {
+    if (error) {
+      console.error(error);
+      res.status(500).send("Error retrieving data from MySQL");
+    } else {
+      // Send the retrieved data as a JSON response
+      res.status(200).json(results);
+    }
+  });
+});
 
-// app.put("/wydads/:id", (req, res) => {
-//   const id = parseInt(req.params.id);
-//   const wydad = wydads.find((wydad) => wydad.id === id);
-
-//   if (!wydad) {
-//     return res.status(404).json({ error: 'Wydad not found' });
-// }
-
-//   wydad.matr = req.body.matr;
-//   wydad.date = req.body.date;
-
-//   fs.writeFileSync('./data/wydad.json', JSON.stringify(wydads, null, 2));
-
-//   res.status(303).json(wydads);
-// });
-
-// app.delete("/wydads/:id", (req, res) => {
-//   const id = parseInt(req.params.id);
-//   const wydad = wydads.find((wydad) => wydad.id === id);
-
-//   if (!wydad) {
-//     return res.status(404).json({ error: "Wydad not found" });
-//   }
-
-//   wydads.splice(wydads.indexOf(wydad), 1);
-//   fs.writeFileSync("./data/wydad.json", JSON.stringify(wydads, null, 2));
-
-//   res.status(200).json(wydads);
-// });
+// Close the MySQL connection when the Node.js app is closed
+process.on('SIGINT', () => {
+  connection.end();
+  process.exit();
+});
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log("looool");
+  console.log("Server is running on port " + PORT);
 });
