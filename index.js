@@ -1,5 +1,5 @@
 const express = require("express");
-const mysql = require('mysql');
+const mysql = require("mysql");
 const app = express();
 var bodyParser = require("body-parser");
 
@@ -8,10 +8,10 @@ app.use(bodyParser.json());
 
 // Create a MySQL connection
 const connection = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: '',
-  database: 'apiYnov'
+  host: "localhost",
+  user: "root",
+  password: "",
+  database: "apiYnov",
 });
 
 // Connect to MySQL
@@ -20,11 +20,11 @@ connection.connect();
 // Define a route to retrieve data from the MySQL database
 app.get("/wydads", (req, res) => {
   // Perform a SELECT query to retrieve data from the 'wydadinfo' table
-  const query = 'SELECT * FROM wydadinfo';
+  const query = "SELECT * FROM wydadinfo";
 
   connection.query(query, (error, results, fields) => {
     if (error) {
-      console.error(error); 
+      console.error(error);
       res.status(500).send("Error retrieving data from MySQL");
     } else {
       // Send the retrieved data as a JSON response
@@ -34,12 +34,12 @@ app.get("/wydads", (req, res) => {
 });
 
 // Close the MySQL connection when the Node.js app is closed
-process.on('SIGINT', () => {
+process.on("SIGINT", () => {
   connection.end();
   process.exit();
 });
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 43334;
 app.listen(PORT, () => {
-  console.log("Server is running on port " + PORT);
+  console.log("looool");
 });
