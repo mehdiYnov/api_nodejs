@@ -9,7 +9,7 @@ app.use(bodyParser.json());
 // Create a MySQL connection
 const connection = mysql.createConnection({
   host: 'localhost',
-  user: 'root', // Remove @localhost from the username
+  user: 'root',
   password: '',
   database: 'apiYnov'
 });
@@ -24,7 +24,7 @@ app.get("/wydads", (req, res) => {
 
   connection.query(query, (error, results, fields) => {
     if (error) {
-      console.error(error);
+      console.error(error); 
       res.status(500).send("Error retrieving data from MySQL");
     } else {
       // Send the retrieved data as a JSON response
