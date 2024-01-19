@@ -8,9 +8,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(bodyParser.json());
 
-// app.get('/wydads', (req, res) =>{
-//     res.status(200).json(wydads)
-// })
+app.get("/wydads", (req, res) => {
+  res.status(200).json(wydads);
+});
 
 // app.get('/wydad/:id', (req, res) =>{
 //     const id = parseInt(req.params.id)
@@ -25,28 +25,32 @@ app.use(bodyParser.json());
 // })
 
 // app.get('/wydads', (req, res ) =>{
-//     res.status(200).json(wydads)
+//   res.status(200).json(wydads)
 // })
 
-app.put("/wydads/:id", (req, res) => {
-  const id = parseInt(req.params.id);
-  const wydad = wydads.find((wydad) => wydad.id === id);
+// app.put("/wydads/:id", (req, res) => {
+//   const id = parseInt(req.params.id);
+//   const wydad = wydads.find((wydad) => wydad.id === id);
 
-  if (!wydad) {
-    return res.status(404).json({ error: 'Wydad not found' });
-}   
+//   if (!wydad) {
+//     return res.status(404).json({ error: 'Wydad not found' });
+// }
 
-  wydad.matr = req.body.matr;
-  wydad.date = req.body.date;
+//   wydad.matr = req.body.matr;
+//   wydad.date = req.body.date;
 
-  fs.writeFileSync('./data/wydad.json', JSON.stringify(wydads, null, 2));
+//   fs.writeFileSync('./data/wydad.json', JSON.stringify(wydads, null, 2));
 
-  res.status(303).json(wydads);
-});
+//   res.status(303).json(wydads);
+// });
 
 // app.delete("/wydads/:id", (req, res) => {
 //   const id = parseInt(req.params.id);
 //   const wydad = wydads.find((wydad) => wydad.id === id);
+
+//   if (!wydad) {
+//     return res.status(404).json({ error: "Wydad not found" });
+//   }
 
 //   wydads.splice(wydads.indexOf(wydad), 1);
 //   fs.writeFileSync("./data/wydad.json", JSON.stringify(wydads, null, 2));
